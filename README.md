@@ -12,3 +12,7 @@ I was reading designing data intensive systems book and wasn't to solid my under
 
 3) Implement replication and failure prevention mode by using a Write Ahead Log
 
+# Usage
+
+imgdb init --path /Users/rohit/data/imgdb
+imgdb import --db /Users/rohit/data/imgdb --file ~/Pictures/cat.jpg
