@@ -65,3 +65,7 @@ bool atomic_copy(const std::string& src, const std::string& dst) {
   }
   return true;
 }
+
+bool append_json_line(){
+    
+}

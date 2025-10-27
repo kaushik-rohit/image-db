@@ -5,6 +5,7 @@
 struct ParsedArgs {
     std::string cmd;
     std::string db_path;
+    std::string img;
 };
 
 char* getCmdOption(char** begin, char** end, const std::string& option){
@@ -22,17 +23,31 @@ bool cmdOptionExists(char** begin, char** end, const std::string& option)
 
 ParsedArgs parse_args(int argc, char** argv){
     ParsedArgs args;
-    
+
     if(cmdOptionExists(argv, argv+argc, "-cmd")) {
         args.cmd = getCmdOption(argv, argv + argc, "-cmd");
     } else {
         throw std::runtime_error("Usage: -cmd is needed");
     }
 
-    if(cmdOptionExists(argv, argv+argc, "-root")){
-        args.db_path = getCmdOption(argv, argv+argc, "-root");
-    } else {
-        throw std::runtime_error("Usage: -root is needed");
+    if(args.cmd == "init"){
+        if(cmdOptionExists(argv, argv+argc, "-root")){
+            args.db_path = getCmdOption(argv, argv+argc, "-root");
+        } else {
+            throw std::runtime_error("Usage: -root is needed");
+        }
+    } else if(args.cmd == "import") {
+        if(cmdOptionExists(argv, argv+argc, "-img")){
+            args.img = getCmdOption(argv, argv+argc, "-img");
+        } else {
+            throw std::runtime_error("Usage: -img is needed");
+        }
+
+        if(cmdOptionExists(argv, argv+argc, "-root")){
+            args.db_path = getCmdOption(argv, argv+argc, "-root");
+        } else {
+            throw std::runtime_error("Usage: -root is needed");
+        }
     }
 
     return args;
@@ -43,5 +58,8 @@ int main(int argc, char **argv){
 
     if(args.cmd == "init") {
         return ImageDB::Open(args.db_path).Init() ? 0 : 1;
+    } else if(args.cmd == "import") {
+        ImageDB db = ImageDB::Open(args.db_path);
+        return db.ImportFile(args.img);
     }
 }

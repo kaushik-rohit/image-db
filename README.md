@@ -14,5 +14,8 @@ I was reading designing data intensive systems book and wasn't to solid my under
 
 # Usage
 
-imgdb init --path /Users/rohit/data/imgdb
-imgdb import --db /Users/rohit/data/imgdb --file ~/Pictures/cat.jpg
+1) Initialize a new db
+./imgdb -cmd init -root "/Users/kaushrk/projects/imgdb"
+
+2) Add image to your database
+./imgdb -cmd import -root "/Users/kaushrk/projects/imgdb" -img "/Users/kaushrk/projects/img.jpg"

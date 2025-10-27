@@ -231,7 +231,7 @@ bool ImageDB::ImportFile(const std::string& file){
     m.bytes = std::filesystem::file_size(file);
     m.created_unix = std::time(nullptr);
 
-    // append_json_line(catalog_path + "/meta.ndjson", meta_to_json(m));
+    append_json_line(catalog_path + "/meta.ndjson", meta_to_json(m));
     // make_thumbnail_256(file, thumbs_path + "/" + m.image_id + "_256.jpg");
 
     std::cout << "Imported: " << m.image_id << " sha256=" << hash << "\n";
