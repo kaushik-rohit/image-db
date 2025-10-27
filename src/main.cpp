@@ -21,7 +21,21 @@ bool cmdOptionExists(char** begin, char** end, const std::string& option)
 }
 
 ParsedArgs parse_args(int argc, char** argv){
+    ParsedArgs args;
+    
+    if(cmdOptionExists(argv, argv+argc, "-cmd")) {
+        args.cmd = getCmdOption(argv, argv + argc, "-cmd");
+    } else {
+        throw std::runtime_error("Usage: -cmd is needed");
+    }
 
+    if(cmdOptionExists(argv, argv+argc, "-root")){
+        args.db_path = getCmdOption(argv, argv+argc, "-root");
+    } else {
+        throw std::runtime_error("Usage: -root is needed");
+    }
+
+    return args;
 }
 
 int main(int argc, char **argv){

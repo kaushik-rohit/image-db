@@ -13,4 +13,5 @@ public:
     std::string catalog_meta_path;
     std::string blobs_dir;
     std::string thumbs_dir;
+    bool is_initialized;
 };

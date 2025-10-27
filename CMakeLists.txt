@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 project(SHA256Test CXX)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -12,6 +12,16 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 add_library(sha256
     src/sha256.cpp
 )
+
+add_executable(imgdb
+    src/main.cpp
+    src/db.cpp
+    src/image.cpp
+    src/meta.cpp
+    src/fsutil.cpp
+)
+
+target_link_libraries(imgdb PRIVATE sha256)
 
 # --- Test executable ---
 add_executable(test_sha256
