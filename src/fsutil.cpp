@@ -66,6 +66,16 @@ bool atomic_copy(const std::string& src, const std::string& dst) {
   return true;
 }
 
-bool append_json_line(){
-    
+bool append_json_line(const std::string& path, const std::string& json){
+    std::ofstream file(path, std::ios::app);
+
+    if(!file) {
+        std::cerr<<"Error opening file for append: " << path<<std::endl;
+        return false;
+    }
+
+    file << json << '\n';
+
+    std::cout<<"Line successfully appended!"<<std::endl;
+    return true;
 }

@@ -8,7 +8,7 @@ I was reading designing data intensive systems book and wasn't to solid my under
 
 1) Build a fast, queryable image database store, Think SQL for images
 
-2) Index, tag images and cluster it intenally, allowing me to fetch images by tags, quality or random chance.
+2) Index, tag images and cluster it intenally, allowing me to fetch images by tags, quality or similarity/cluster.
 
 3) Implement replication and failure prevention mode by using a Write Ahead Log
 
