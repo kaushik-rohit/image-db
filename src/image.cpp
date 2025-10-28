@@ -1,12 +1,14 @@
 #define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_RESIZE2_IMPLEMENTATION
+#define STB_IMAGE_WRITE_IMPLEMENTATION 
+#define STBIW_SPRINTF snprintf
 #include "stb_image.h"
-#define STB_IMAGE_RESIZE_IMPLEMENTATION
 #include "stb_image_resize2.h"
-#define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 #include <string>
 #include <image.h>
 #include <iostream>
+#include <algorithm> 
 
 bool read_dims(const std::string& filepath, ImgDims* out) {
     int w, h, c;
@@ -31,17 +33,19 @@ bool make_thumbnail_256(const std::string& input_path, const std::string& output
     const int target_size = 256;
     unsigned char* resized = new unsigned char[target_size * target_size * c];
 
-    int alpha_channel = (c == 4) ? 3 : STBIR_ALPHA_CHANNEL_NONE;
+    stbir_pixel_layout layout = (c == 4) ? STBIR_RGBA : STBIR_RGB;
 
-    int success = stbir_resize_uint8_srgb(
-        data, w, h, 0,                    // input
-        resized, target_size, target_size, 0, // output
-        c,                                // number of channels
-        alpha_channel,                    // alpha channel index or -1
-        0                                 // flags (0 = default)
+    double scale = 256.0 / std::max(w, h);
+    int target_w = std::max(1, int(w * scale));
+    int target_h = std::max(1, int(h * scale));
+
+    unsigned char* ok = stbir_resize_uint8_srgb(
+        data, w, h, 0,                 // input
+        resized, target_w, target_h, 0,// output (compute target_w/h to preserve aspect)
+        layout
     );
 
-    if (!success) {
+    if (!ok) {
         std::cerr << "Resize failed.\n";
         stbi_image_free(data);
         delete[] resized;

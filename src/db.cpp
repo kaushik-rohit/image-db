@@ -208,9 +208,11 @@ bool ImageDB::ImportFile(const std::string& file){
     std::string hash = sha256_file(file);
     std::string blob_dir = db_root + "/blobs" + hash.substr(0,2);
     std::string blob_path = blob_dir + "/" + hash;
+    std::string thumbs_path = db_root + "/thumbs";
 
     if(fs::exists(blob_path)) {
         std::cout<<"Already present (sha256 match). Skipped.\n";
+        return false;
     }
 
     atomic_copy(file, blob_path);
@@ -232,7 +234,7 @@ bool ImageDB::ImportFile(const std::string& file){
     m.created_unix = std::time(nullptr);
 
     append_json_line(catalog_dir + "/meta.ndjson", meta_to_json(m));
-    // make_thumbnail_256(file, thumbs_path + "/" + m.image_id + "_256.jpg");
+    make_thumbnail_256(file, thumbs_path + "/" + m.image_id + "_256.jpg");
 
     std::cout << "Imported: " << m.image_id << " sha256=" << hash << "\n";
     return true;
